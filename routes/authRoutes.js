@@ -8,10 +8,17 @@ router.post(
   "/login",
   (req, res, next) => {
     try {
-      // TODO: Implement login action (get the user if it exist with entered credentials)
+      // Перевірка наявності необхідних полів
+      const { email, password } = req.body;
+      if (!email || !password) {
+        throw Error("Email and password are required");
+      }
+
+      // Спроба авторизації
+      const data = authService.login({ email, password });
       res.data = data;
     } catch (err) {
-      res.err = err;
+      res.err = { error: true, message: err.message };
     } finally {
       next();
     }
